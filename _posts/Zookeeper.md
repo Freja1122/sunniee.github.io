@@ -1,0 +1,450 @@
+title: Zookeeper
+---
+
+Annuuser
+
+<!-- more -->
+
+管理Hadoop集群中的NameNode，HBase中HBaseMaster的选举，Servers之间状态同步等。
+
+HBase中ZooKeeper实例负责的工作:
+
+存储HBase的Schema
+
+实时监控HRegionServer,存储所有Region的寻址入口
+
+保证HBase集群中只有一个Master
+
+
+
+## 配置zookeeper
+
+所谓的*zookeeper*容错是指，当宕掉几个*zookeeper*服务器之后，剩下的*个数*必须大于宕掉的*个数*，也就是剩下的服务数必须大于n/2，*zookeeper*才可以继续使用，无论奇偶数都可以选举leader。5台机器最多宕掉2台，还可以继续使用，因为剩下3台大于5/2。说为什么*最好*为*奇数个*，是在以最大容错服务器*个数*的条件
+
+#### 设置环境变量
+
+```
+vim profile
+```
+
+```
+# zookeeper path
+
+ZOOKEEPER=/usr/zookeeper-3.3.2
+
+PATH=$PATH:$ZOOKEEPER/bin
+
+export PATH
+```
+
+```
+source profile
+```
+
+#### 配置zoo.cfg
+
+```
+ 1 zoo.cfg                                                                                                                   X
+ # The number of milliseconds of each tick
+ tickTime=2000
+ # The number of ticks that the initial
+ # synchronization phase can take
+ initLimit=10
+ # The number of ticks that can pass between
+ # sending a request and getting an acknowledgement
+ syncLimit=5
+ # the directory where the snapshot is stored.
+ # do not use /tmp for storage, /tmp here is just
+ # example sakes.
+ dataDir=/tmp/zookeeper
+ # the port at which the clients will connect
+ clientPort=2181
+ #
+ # Be sure to read the maintenance section of the
+ # administrator guide before turning on autopurge.
+ #
+ # http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+ #
+ # The number of snapshots to retain in dataDir
+ #autopurge.snapRetainCount=3
+ # Purge task interval in hours
+ # Set to "0" to disable auto purge feature
+ #autopurge.purgeInterval=1
+
+ server.10=cluster10:2888:3888
+ server.11=cluster11:2888:3888
+ server.12=cluster12:2888:3888
+ server.13=cluster13:2888:3888
+ 
+```
+
+#### 检查**myid**
+
+```
+cd /tmp/zookeeper/myid
+```
+
+#### 开启zookeeper服务
+
+分别启动五个zookeeper服务器，在五台datanode机器的zookeeper安装目录下面使用
+
+```
+/opt/zookeeper-3.4.5/bin/zkServer.sh start
+```
+
+```
+启动客户端脚本：“zkCli.sh -server 192.168.1.132:2181”
+```
+
+#### jps
+
+```
+namenode上显示如下：
+
+29844 JobTracker 
+29583 NameNode 
+31477 HMaster 
+29762 SecondaryNameNode 
+32356 Jps 
+31376 HQuorumPeer
+
+
+datanode：
+
+16812 DataNode 
+17032 HRegionServer 
+17752 HQuorumPeer 
+16921 TaskTracker 
+18461 Jps
+```
+
+#### 查看zookeeper状态
+
+```
+/opt/zookeeper-3.4.5/bin/zkServer.sh status
+
+leader：
+
+JMX enabled by default 
+Using config: /jz/zookeeper-3.3.1/bin/../conf/zoo.cfg 
+Mode: leader
+
+follower：
+
+JMX enabled by default 
+Using config: /jz/zookeeper-3.3.1/bin/../conf/zoo.cfg 
+Mode: follower
+```
+
+#### 坑
+
+```
+通过shell脚本在每个机器上启动zookeeper的时候，
+
+可能会显示错误信息“Cannot open channel to X at election address”。
+
+这是由于zoo.cfg文件中指定的其他zookeeper服务找不到所导致。
+
+所有机器的zookeeper服务启动之后该错误提示将会消失。
+```
+
+
+
+## 配置Hbase
+
+#### 编辑hbase-env.sh文件，加入变量
+
+```
+export JAVA_HOME=/usr/local/jdk1.8.0_60
+export HBASE_CLASSPATH=/usr/local/cluster/hadoop/etc/hadoop
+export HBASE_HEAPSIZE=4000
+export HBASE_LOG_DIR=${HBASE_HOME}/logs
+export HBASE_MANAGES_ZK=false
+
+export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_45
+ export HBASE_CLASSPATH=/opt/hbase
+ export HBASE_MANAGES_ZK=false
+ export HBASE_HOME=/opt/hbase
+ export HADOOP_HOME=/opt/hadoop-2.7.3
+ export HBASE_LOG_DIR=/opt/hbase/logs
+```
+
+- 其中`JAVA_HOME` 和 `HBASE_CLASSPATH` 根据实际情况进行配置
+- `HBASE_HEAPSIZE` 的大小根据你的集群配置，默认是 1000
+- `HBASE_LOG_DIR` 是 HBase 日志存放位置
+- `HBASE_MANAGES_ZK=false` 含义为 hbase 不托管 zookeeper 的启动与关闭，因为笔者的 ZooKeeper 是独立安装的
+
+代表独立的zookeeper
+
+**复制到所有节点上才能更改配置**
+
+#### 编辑hbase-site.xml
+
+更改了cluster01:60000为60000
+
+```
+<property>
+<name>hbase.rootdir</name>
+<value>hdfs://master5:8020/hbase</value>
+</property>
+
+<property>
+<name>hbase.cluster.distributed</name>
+<value>true</value>
+</property>
+
+<property>
+<name>hbase.master</name>
+<value>60000</value>
+</property>
+
+<property>
+<name>hbase.tmp.dir</name>
+<value>/usr/local/cluster/data/hbase-tmp</value>
+</property>
+
+<property>
+<name>hbase.zookeeper.quorum</name>
+<value>slave51,slave52,slave53</value>
+</property>
+
+<property>
+<name>hbase.zookeeper.property.dataDir</name>
+<value>/usr/local/cluster/zookeeper/data</value>
+</property>
+
+<property>
+<name>hbase.zookeeper.property.clientPort</name>
+<value>2181</value>
+</property>
+
+<property>
+<name>zookeeper.session.timeout</name>
+<value>120000</value>
+</property>
+
+<property>
+<name>hbase.regionserver.restart.on.zk.expire</name>
+<value>true</value>
+</property>
+```
+
+把配置文件拷贝到另外四个RegionServer节点
+
+#### hbase-site.xml 配置参数解析
+
+**1. hbase.rootdir** 
+这个目录是 RegionServer 的共享目录，用来持久化 HBase。**特别注意的是 hbase.rootdir 里面的 HDFS 地址是要跟 Hadoop 的 core-site.xml 里面的 fs.defaultFS 的 HDFS 的 IP 地址或者域名、端口必须一致。**
+
+**2. hbase.cluster.distributed** 
+HBase 的运行模式。为 false 表示单机模式，为 true 表示分布式模式。若为 false，HBase 和 ZooKeeper 会运行在同一个 JVM 中
+
+**3. hbase.master**
+
+- 如果只设置单个 Hmaster，那么 hbase.master 属性参数需要设置为 **master5:60000**(主机名:60000)
+- 如果要设置多个 Hmaster，那么我们**只需要提供端口 60000**，因为选择真正的 master 的事情会有 zookeeper 去处理
+
+**4. hbase.tmp.dir** 
+本地文件系统的临时文件夹。可以修改到一个更为持久的目录上。(/tmp会在重启时清除)
+
+**5. hbase.zookeeper.quorum** 
+对于 ZooKeeper 的配置。至少要在 hbase.zookeeper.quorum 参数中列出全部的 ZooKeeper 的主机，用逗号隔开。该属性值的默认值为 localhost，这个值显然不能用于分布式应用中。
+
+**6. hbase.zookeeper.property.dataDir** 
+这个参数用户设置 ZooKeeper 快照的存储位置，默认值为 `/tmp`，显然在重启的时候会清空。因为笔者的 ZooKeeper 是独立安装的，所以这里路径是指向了 $ZOOKEEPER_HOME/conf/zoo.cfg 中 **dataDir** 所设定的位置。
+
+**7. hbase.zookeeper.property.clientPort** 
+表示客户端连接 ZooKeeper 的端口。
+
+**8. zookeeper.session.timeout** 
+ZooKeeper 会话超时。Hbase 把这个值传递改 zk 集群，向它推荐一个会话的最大超时时间
+
+**9. hbase.regionserver.restart.on.zk.expire** 
+当 regionserver 遇到 ZooKeeper session expired ， regionserver 将选择 restart 而不是 abort。
+
+------
+
+#### 配置 regionservers
+
+在这里列出了希望运行的全部 Regionserver ，一行写一个主机名（就像 Hadoop 中的 slaves 一样）。这里列出的 Server 会随着集群的启动而启动，集群的停止而停止。
+
+```
+vim regionservers
+```
+
+添加如下：
+
+```
+slave51
+slave52
+slave53
+```
+
+#### 配置backup-master
+
+```
+echo cluster10 > backup-masters
+```
+
+#### 开启hbase服务
+
+> 启动仅在master节点上执行即可
+
+```
+bin/start-hbase.sh     
+```
+
+**1. 在其中一台主机上启动 Hmaster，即笔者在 cluster01上，执行以下命令**
+
+```
+start-hbase.sh 
+```
+
+**2. 在另一台 Hmaster 的主机上，即笔者在 cluster10 上，执行以下命令**
+
+```
+hbase-daemons.sh start master
+```
+
+#### jps
+
+```
+master中的信息
+[hadoop@master ~]$ jps
+6225 Jps
+2897 SecondaryNameNode   # hadoop进程
+2710 NameNode            # hadoop master进程
+3035 ResourceManager     # hadoop进程
+5471 HMaster             # hbase master进程
+2543 HQuorumPeer         # zookeeper进程
+
+
+salve中的信息
+[hadoop@slave1 ~]$ jps
+4689 Jps
+2533 HQuorumPeer          # zookeeper进程
+2589 DataNode             # hadoop slave进程
+4143 HRegionServer        # hbase slave进程
+```
+
+#### 重启hbase
+
+```
+~/hbase/bin/stop-hbase.sh
+~/hbase/bin/start-hbase.sh
+```
+
+重启前后jps
+
+```
+10261 ResourceManager
+26775 RunJar
+10039 SecondaryNameNode
+23258 RunJar
+2810 Jps
+9835 NameNode
+9979 FsShell
+12381 HRegionServer
+12205 HMaster
+12077 HQuorumPeer
+25758 Master
+```
+
+```
+10261 ResourceManager
+26775 RunJar
+10039 SecondaryNameNode
+23258 RunJar
+9835 NameNode
+9979 FsShell
+25758 Master
+5583 Jps
+```
+
+#### 进入shell
+
+```
+bin/hbaseshell
+
+停止备份HMaster 1 
+cat /${PID_DIR}/hbase-${USER}-1-master.pid |xargs kill -9
+
+停止RegionServer 
+bin/local-regionservers.sh stop 1
+
+```
+
+启动顺序: `hadoop-> zookeeper-> hbase`
+停止顺序：`hbase-> zookeeper-> hadoop`
+
+#### WEB页面
+
+HMaster：<http://192.168.0.10:16010
+
+
+
+**2. 模拟 master5 失效后 ，Hmaster 故障切换**
+
+- 在 master5 上执行
+
+```
+hbase-daemon.sh stop master
+```
+
+- 此时查看 Web 浏览器 （原来的 10.6.3.43:60010 失效打不开了）
+
+```
+10.6.3.33:60010
+```
+
+![这里写图片描述](http://img.voidcn.com/vcimg/000/003/554/521_f29_bef.jpg)
+
+- 此时再次查看 master52 上的日志可以看到选举的相关信息
+
+![这里写图片描述](http://img.voidcn.com/vcimg/000/003/554/522_844_8b2.jpg)
+
+补充：**关闭集群** 
+**Note：在关闭之前请确保 ZooKeeper 并没有关闭！**
+
+```
+stop-hbase.sh
+```
+
+```
+
+```
+
+#### 坑
+
+```
+时间
+```
+
+```
+设置的zookeeper data文件没有写的权限
+```
+
+```
+log位置
+```
+
+
+
+## HBASE HA演示
+
+查看网页16010找到活跃的hmaster
+
+```
+./hbase-daemon.sh stop master
+```
+
+查看网页，切换了hmaster
+
+```
+再次启动变成备用
+```
+
+```
+./hbase-daemon.sh start master --backup
+```
+
