@@ -1,147 +1,331 @@
----
-layout: page
-title: "About"
-description: "Hey, this is Sunnie."
-header-img: "img/post-bg-rwd.jpg"
----
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml">
 
-<!-- Language Selector -->
-<!-- <select class="sel-lang" onchange= "onLanChange(this.options[this.options.selectedIndex].value)">
-    <option value="0" selected> 中文 Chinese </option>
-    <option value="1"> 英文 English </option>
-</select> -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Dreaming</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel='stylesheet prefetch' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Varela+Round'>
+  <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
+</head>
 
-<!-- Chinese Version -->
-<div class="zh post-container">
-
-    <!--copied from markdown -->
-    <!-- <blockquote><p>冰冻三尺 非一日之寒<br>
-    积土成山 非斯须之作</p></blockquote>
-
-    <p>Hey，我是<strong>柏荧(BY)</strong>，一只iOS程序猿，现在厦门工作。</p>
-
-    <p>工作、学习之余，我还是一个健身爱好者，同时也非常喜欢拳击。</p>
-
-    <p>这是我的利用 <a href="https://pages.github.com/">GitHub Pages</a> 与 <a href="http://jekyll.com.cn/">Jekyll</a> 搭建的 个人博客。我在GitHub主页<a href="https://github.com/qiubaiying">👉GitHub·BY</a> 与 简书主页<a href="https://http://www.jianshu.com/u/e71990ada2fd">👉BY</a>。如果有什么问题，欢迎提出探讨~</p>
-
-    <p></p>
-    
-    <h5>Talks</h5> -->
-
-    <!-- <ul>
-        <li><a href="https://github.com">GitHub</a></li>
-        <li><a href="http://jekyll.com.cn/">jekyll</a></li>
-        <li><a href="http://huangxuan.me/">Hux</a></li> 
-        <li><a href="https://analytics.google.com/analytics">Google Analytics</a></li>
-    </ul> -->
-</div>
-
-<!-- English Version -->
-<!-- <div class="en post-container">
-    <blockquote><p>Yet another iOS Developer. <br>
-    Yet another Life-long Student.</p></blockquote>
-
-    <p>Hi, I am <strong>Baiying Qiu</strong>，you can call me <strong>BY</strong>. I am an iOS software engineer and currently working in Xiamen</p>
-
-    <p>This is my personal blog, through making Github Pages and Jekyll.My GitHub  👉 <a href="http://github.com/qiubaiying">Github·BY</a>.</p>
-    
-    <p>I am a sports enthusiast, I like fitness, running and boxing.</p>
-
-    <h5>Talks</h5>
-
-    <ul>
-    <li><a href="https://github.com">GitHub</a></li>
-    <li><a href="http://jekyll.com.cn/">jekyll</a></li>
-    <li><a href="https://pages.github.com/">GitHub Pages</a></li>
-    <li><a href="https://qiubaiying.github.io">BY</a></li>
-    </ul>
-</div> -->
-
-<!-- Handle Language Change -->
-<script type="text/javascript">
-    // get nodes
-    var $zh = document.querySelector(".zh");
-    var $en = document.querySelector(".en");
-    var $select = document.querySelector("select");
-
-    // bind hashchange event
-    window.addEventListener('hashchange', _render);
-
-    // handle render
-    function _render(){
-        var _hash = window.location.hash;
-        // en
-        if(_hash == "#en"){
-            $select.selectedIndex = 1;
-            $en.style.display = "block";
-            $zh.style.display = "none";
-        // zh by default
-        }else{
-            // not trigger onChange, otherwise cause a loop call.
-            $select.selectedIndex = 0;
-            $zh.style.display = "block";
-            $en.style.display = "none";
-        }
-    }
-
-    // handle select change
-    function onLanChange(index){
-        if(index == 0){
-            window.location.hash = "#zh"
-        }else{
-            window.location.hash = "#en"
-        }
-    }
-
-    // init
-    _render();
-</script>
-
-
-<!-- Gitalk 评论 start  -->
-{% if site.gitalk.enable %}
-<!-- Gitalk link  -->
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
-
-<div id="gitalk-container"></div>
-    <script type="text/javascript">
-    var gitalk = new Gitalk({
-    clientID: '{{site.gitalk.clientID}}',
-    clientSecret: '{{site.gitalk.clientSecret}}',
-    repo: '{{site.gitalk.repo}}',
-    owner: '{{site.gitalk.owner}}',
-    admin: ['{{site.gitalk.admin}}'],
-    distractionFreeMode: {{site.gitalk.distractionFreeMode}},
-    id: 'about',
-    });
-    gitalk.render('gitalk-container');
-</script>
-{% endif %}
-<!-- Gitalk end -->
-
- <!-- disqus 评论框 start  -->
-{% if site.disqus.enable %}
-
-<div class="comment">
-    <div id="disqus_thread" class="disqus-thread">
+<body>
+  <svg class="svg-cursor" id="svg-cursor" width="60" height="60">
+    <g class="svg-cursor__lines">
+      <circle cx="30" cy="30" r="15" stroke="white"
+              stroke-width="2" fill=none fill-opacity="0" stroke-opacity="0.7"/>
+    </g>
+  </svg>
+  <div id="lottie"></div>
+  <section id="pageOne">
+    <div id="title">
+      <p class="animated fadeInUp delay-1">EATING</p>
     </div>
+    <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; left: -9999px;">
+      <symbol id="sheep-eating" viewBox="0 0 124 77">
+        <g id="body" transform="translate(35.866937, 0.000000)">
+          <path d="M14.1306677,64.9860738 C14.1306677,64.9860738 13.7928243,78.0285711 17.9057006,76.3054166 C17.9057006,76.3054166 21.5632227,78.1919737 21.4897785,64.7186877 L14.1306677,64.9860738 Z" id="Legs-1" fill="#EAE8E8"></path>
+          <path d="M64.6749793,65.1494764 C64.6749793,65.1494764 64.3371359,78.1919737 68.4500122,76.4688192 C68.4500122,76.4688192 72.1075343,78.3553763 72.0340901,64.8820903 L64.6749793,65.1494764 Z" id="Legs-2" fill="#EAE8E8"></path>
+          <path d="M9.82683651,10.7661247 C9.82683651,10.7661247 14.2334897,2.67026924 22.0626434,7.39408946 C22.0626434,7.39408946 31.1844154,-6.80708077 44.0959091,5.90861141 C44.0959091,5.90861141 55.77354,1.0956625 62.2219424,7.27525122 C62.2219424,7.27525122 78.2327822,0.531180835 78.2327822,18.1786602 C78.2327822,18.1786602 85.2393606,19.5304452 84.3433412,28.1907823 C84.3433412,28.1907823 91.0561428,32.9146025 84.4167854,38.5891287 C84.4167854,38.5891287 88.8968828,49.6113759 76.3379213,53.4439093 C76.3379213,53.4439093 76.8960974,56.711961 74.6633931,57.3804261 C74.6633931,57.3804261 74.4430604,74.1366186 60.3123927,63.6788531 C57.1794846,65.4349835 53.2638412,64.7832024 50.8527773,62.1042463 C50.8527773,62.1042463 41.29034,72.6808501 26.7190069,61.9854081 C26.7190069,61.9854081 13.822202,77.0630104 11.0460105,57.7072313 C11.0460105,57.7072313 -5.74333793,56.3554463 2.92307992,40.2825737 C2.92307992,40.2825737 -2.18863773,27.3440598 8.79861744,19.4858809 C8.79861744,19.4858809 3.12872373,15.207704 2.0123716,12.7418105 L9.82683651,10.7661247 Z" id="Body-2" fill="#333333"></path>
+        </g>
+        <g id="sheep-eating-head" transform="translate(0.000000, 10.398346)">
+          <path d="M24.3508836,8.83500318 L16.316086,8.58247191 C16.316086,8.58247191 15.4053777,11.7019758 21.3102929,12.9200678 C21.3102929,12.9200678 -0.928616633,25.5466313 5.43165274,41.3966822 C5.43165274,41.3966822 9.01573063,46.7444032 25.4672357,44.0705427 C25.5599668,41.3561114 26.2366733,38.6947461 27.4502296,36.2717829 C27.4502296,36.2717829 21.3396706,23.5709455 31.930327,15.0443015 L24.3508836,8.83500318 Z" id="Head-2" fill="#EAE8E8"></path>
+          <g id="Mouth" transform="translate(5.020365, 39.242739)" fill="#545151">
+            <path d="M0.822575254,2.55502226 L0.822575254,2.40647445 C1.59128808,2.30842859 2.32350345,2.01734058 2.95245761,1.55975196 C3.22717542,1.30745073 3.30489428,0.902374737 3.14341258,0.564481662 L3.37843408,0.564481662 C3.56063724,0.951361674 3.46439125,1.4136947 3.14341258,1.69344499 C2.45613008,2.17807058 1.65667227,2.47485772 0.822575254,2.55502226 L0.822575254,2.55502226 Z" id="Shape"></path>
+          </g>
+          <ellipse id="Eyes" fill="#545151" transform="translate(19.423194, 20.867575) rotate(-4.570000) translate(-19.423194, -20.867575) " cx="19.4231944" cy="20.8675749" rx="2.0123716" ry="1.30722069"></ellipse>
+          <path d="M23.3373533,8.86471274 L30.9167968,15.0294467 C30.9167968,15.0294467 21.0312049,21.4170023 26.4073217,36.2717829 C24.606945,38.4423053 23.8775831,41.3216826 24.4243278,44.1002523 L35.5144049,45.5857303 C35.5144049,45.5857303 32.0625266,38.15834 37.2036219,33.419665 C37.2036219,33.419665 30.2117323,21.8032266 42.0068738,12.3555862 C42.0068738,12.3555862 38.6284398,5.70064448 35.0590507,5.78977316 C35.0590507,5.78977316 29.668245,1.60072504 23.9542848,8.4339241 L23.3373533,8.86471274 Z" id="Shape" fill="#333333"></path>
+          <path d="M31.8862604,4.52711681 C31.8862604,4.52711681 42.741316,-1.9644223 54.5511465,0.976824253 C54.5511465,0.976824253 65.0683586,3.45757261 62.0130791,8.32994064 C62.0130791,8.32994064 69.0049688,15.5642188 60.5441947,23.1847212 C60.5441947,23.1847212 68.1089493,23.9571698 64.7011375,34.5931927 C64.7011375,34.5931927 69.0343465,43.3278037 61.3227034,44.8727009 L55.4471659,45.8828259 C55.4471659,45.8828259 49.5716284,52.9388467 37.8205533,46.6701293 L32.958546,44.0556879 C32.958546,44.0556879 26.8773647,39.3021582 32.0772154,35.1428196 C32.0772154,35.1428196 25.4819245,26.6161755 33.6782994,16.1287004 C33.6782994,16.1287004 27.2592746,9.69658045 28.5372041,4.80935764 C28.5372041,4.80935764 30.9608633,3.90321603 31.7687497,4.40827857 L31.8862604,4.52711681 Z" id="Shape" fill="#333333"></path>
+          <path d="M5.91638458,41.5006657 C4.32208029,40.5844208 2.41059821,40.4215212 0.687156187,41.0550223 C2.37684783,40.6225161 4.16254804,40.7957539 5.74011846,41.54523 L6.18078377,41.8126161 L5.91638458,41.5006657 Z" id="Shape" fill="#35B738"></path>
+          <path d="M5.93107343,41.4709561 C4.4814701,40.336914 2.61313019,39.9025586 0.819355781,40.2825737 C2.55260421,40.0942495 4.29680469,40.5194764 5.7548073,41.4858109 L6.16609493,41.8126161 L5.93107343,41.4709561 Z" id="Shape" fill="#35B738"></path>
+          <path d="M5.84294037,41.277844 C4.49801963,40.0138763 2.67205118,39.411017 0.848733469,39.6289633 C2.59012847,39.600727 4.2874319,40.1833845 5.6519854,41.277844 L6.03389533,41.6343587 L5.84294037,41.277844 Z" id="Shape" fill="#35B738"></path>
+          <path d="M5.84294037,41.54523 C4.14501075,40.8433452 2.22805878,40.9302295 0.599023124,41.7829065 C2.21715634,41.1332373 4.0078161,41.0702499 5.66667424,41.6046491 L6.13671724,41.8126161 L5.84294037,41.54523 Z" id="Shape" fill="#35B738"></path>
+          <path d="M5.91638458,41.88689 C4.62043417,43.1853329 2.82870661,43.8471896 1.01031075,43.6991732 C2.74849579,43.6441944 4.41437598,42.9829106 5.72542961,41.8274709 L6.07796187,41.4561013 L5.91638458,41.88689 Z" id="Shape" fill="#35B738"></path>
+          <path d="M5.94576227,41.9017448 C4.85726781,43.3933411 3.17677305,44.3272401 1.34815416,44.456767 C3.06116105,44.154406 4.61804507,43.2622054 5.7548073,41.9314543 L6.06327302,41.5006657 L5.94576227,41.9017448 Z" id="Shape" fill="#35B738"></path>
+          <path d="M5.84294037,42.1394212 C4.88130036,43.7405456 3.26759996,44.8284989 1.43628722,45.1103774 C3.12614138,44.6407653 4.60129911,43.5901862 5.60791886,42.1394212 L5.87231805,41.6937778 L5.84294037,42.1394212 Z" id="Shape" fill="#35B738"></path>
+          <path d="M5.84294037,41.8571804 C4.39811607,43.0016519 2.52931583,43.4469759 0.731222718,43.0752724 C2.46305576,43.2513574 4.20176406,42.8157065 5.6519854,41.8423256 L6.04858418,41.5155205 L5.84294037,41.8571804 Z" id="Shape" fill="#35B738"></path>
+        </g>
+      </symbol>
+    </svg>
+
+    <div class="aniPart" id="aniPart">
+      <div class="row" id="row">
+        <svg viewBox="0 0 124 77" width="15vw" height="30vh">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#sheep-eating"></use>
+        </svg>
+      </div>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js'></script>
+  </section>
+  <section id="pageTwo">
+    <div id="title">
+      <p class="animated fadeInUp delay-1">CODING</p>
+    </div>
+    <div class="wrap" id="wrap">
+		<div class="comp">
+			<div class="monitor">
+				<div class="mid">
+					<div class="site">
+						<div class="topbar">
+							<div class="cerrar">
+								<div class="circl"></div>
+								<div class="circl"></div>
+								<div class="circl"></div>
+							</div>
+						</div>
+						<div class="inhead">
+							<div class="mid">
+								<div class="item"></div>
+							</div>
+							<div class="mid txr">
+								<div class="item"></div>
+								<div class="item"></div>
+								<div class="item"></div>
+								<div class="item"></div>
+							</div>
+						</div>
+						<div class="inslid">
+
+						</div>
+						<div class="incont">
+							<div class="item"></div>
+							<div class="item"></div>
+							<div class="item"></div>
+							<div class="item"></div>
+							<div class="wid">
+								<div class="itwid">
+									<div>
+										<div class="contfoot"></div>
+									</div>
+								</div>
+								<div class="itwid">
+									<div>
+										<div class="contfoot"></div>
+									</div>
+								</div>
+								<div class="itwid">
+									<div>
+										<div class="contfoot"></div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="infoot">
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mid codigo">
+					<div class="line">
+						<div class="item var"></div>
+						<div class="item cont"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line">
+						<div class="item min var"></div>
+						<div class="item min fun"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line">
+						<div class="item min var"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line">
+						<div class="item var"></div>
+						<div class="item atr"></div>
+						<div class="item cont"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab1">
+						<div class="item min atr"></div>
+						<div class="item lrg fun"></div>
+						<div class="item min fun"></div>
+						<div class="item lrg cont"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab1">
+						<div class="item lrg atr"></div>
+						<div class="item min fun"></div>
+						<div class="item min cont"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab1">
+						<div class="item atr"></div>
+						<div class="item min fun"></div>
+						<div class="item atr"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab1">
+						<div class="item min atr"></div>
+						<div class="item min cont"></div>
+						<div class="item lrg atr"></div>
+						<div class="item  fun"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab1">
+						<div class="item min atr"></div>
+						<div class="item lrg fun"></div>
+						<div class="item lrg cont"></div>
+						<div class="item min fun"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab1">
+						<div class="item min var"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab1">
+						<div class="item min var"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab2">
+						<div class="item min var"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab2">
+						<div class="item min atr"></div>
+						<div class="item min fun"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab3">
+						<div class="item min atr"></div>
+						<div class="item min fun"></div>
+						<div class="item lrg fun"></div>
+						<div class="item lrg cont"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab3">
+						<div class="item min atr"></div>
+						<div class="item min fun"></div>
+						<div class="item lrg atr"></div>
+						<div class="item lrg cont"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab4">
+						<div class="item min fun"></div>
+						<div class="item lrg atr"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab1">
+						<div class="item atr"></div>
+						<div class="item var"></div>
+						<div class="item cont"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab3">
+						<div class="item min var"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line tab4">
+						<div class="item min atr"></div>
+						<div class="item min fun"></div>
+						<div class="item lrg atr"></div>
+						<div class="item lrg cont"></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="line">
+						<div class="item min var"></div>
+						<div class="clearfix"></div>
+					</div>
+
+				</div>
+			</div>
+			<div class="base">
+
+			</div>
+		</div>
+	</div>
+  </section>
+  <section id="pageThree">
+    <div id="title">
+      <p class="animated fadeInUp delay-1">SLEEPING</p>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute;">
+      <symbol id="sleep-sheep" viewBox="0 0 122 81">
+      <g id="sleep-1" transform="translate(13.569697, 16.200000)" font-size="18" fill="#F7F708" font-family="Geneva" font-weight="bold">
+        <text id="Z" transform="translate(15.563487, 16.034905) rotate(-24.720000) translate(-15.563487, -16.034905) ">
+          <tspan x="4.38015341" y="21.5349055">Z</tspan>
+        </text>
+      </g>
+      <g id="sleep-2" transform="translate(25.884848, 29.109589)" font-size="18" fill="#F7F708" font-family="Geneva" font-weight="bold">
+        <text id="Z" transform="translate(13.335207, 14.256637) rotate(7.880000) translate(-13.335207, -14.256637) ">
+          <tspan x="2.15187382" y="19.7566372">Z</tspan>
+        </text>
+      </g>
+      <g id="sleep-3" transform="translate(31.621212, 33.200000)" font-size="18" fill="#F7F708" font-family="Geneva" font-weight="bold">
+        <text id="Z" transform="translate(16.032972, 16.034905) rotate(-24.720000) translate(-16.032972, -16.034905) ">
+          <tspan x="4.84963826" y="21.5349055">Z</tspan>
+        </text>
+      </g>
+      <g id="back-leg" transform="translate(97.600000, 57.809589)" fill="#CCCACA">
+        <path d="M0.386333333,10.129161 C0.386333333,10.129161 3.33466667,1.21916096 15.9616667,0.307910959 L18.1576667,0.307910959 C18.1576667,0.307910959 28.548,7.33466096 6.527,14.037411 C6.527,14.037411 1.586,15.677661 0.793,11.263161 L0.386333333,10.129161 Z" id="Shape"></path>
+      </g>
+      <g id="body" transform="translate(4.066667, 0.000000)" fill="#F2F0F0">
+        <g id="Group" transform="translate(-0.000000, 0.000000)">
+          <path d="M19.459,12.5145 C19.459,12.5145 24.888,2.53125 34.77,8.36325 C34.77,8.36325 46.1973333,-9.153 62.342,6.54075 C62.342,6.54075 76.9616667,0.6075 85.034,8.2215 C85.034,8.2215 105.082667,-0.10125 105.082667,21.6675 C105.082667,21.6675 113.846333,23.328 112.748333,34.02 C112.748333,34.02 121.166333,39.852 112.748333,46.91925 C112.748333,46.91925 118.360333,60.507 102.581667,65.14425 C102.581667,65.14425 103.273,69.19425 100.548333,70.00425 C100.548333,70.00425 58.7633333,88.857 40.5243333,75.6945 C40.5243333,75.6945 -0.142333333,68.769 10.7156667,48.924 C10.7156667,48.924 4.31066667,32.967 18.0966667,23.26725 C18.0966667,23.26725 11.0003333,18.00225 9.59733333,14.9445 L19.459,12.5145 Z" id="Shape"></path>
+          <path d="M8.967,15.552 C8.967,15.552 2.03333333,21.87 6.1,34.60725 L10.1666667,52.67025 L18.8286667,20.27025 L9.71933333,15.00525 L8.967,15.552 Z" id="Shape"></path>
+          <path d="M19.459,12.5145 C5.22566667,10.02375 5.22566667,22.9635 5.22566667,22.9635 C5.22566667,22.9635 -7.09633333,35.802 8.601,39.71025 C8.601,39.71025 -3.599,53.379 7.686,57.51" id="Shape"></path>
+        </g>
+        <polygon id="Shape" points="7.97066667 48.90375 6.832 57.1455 12.8506667 57.51 12.8506667 50.92875"></polygon>
+      </g>
+      <g id="sheep-head" transform="translate(0.000000, 4.050000)">
+        <g id="head" fill="#CCCACA">
+          <path d="M34.3226667,13.34475 C36.783,13.62825 39.345,13.14225 37.2506667,9.29475 C36.7423333,8.28225 41.8663333,1.80225 31.4353333,3.21975 C30.2356667,1.0125 27.8363333,-1.03275 24.9286667,2.53125 C23.0376667,1.539 16.2666667,-2.89575 15.5143333,3.05775 C15.5143333,3.05775 5.59166667,0.66825 11.4476667,6.1155 C10.3903333,6.075 5.49,11.34 14.2333333,11.745 L13.2166667,11.92725 C13.2166667,11.92725 12.017,13.46625 7.11666667,14.661 C2.21633333,15.85575 -1.01666667,18.24525 0.61,20.736 C2.23666667,23.22675 7.625,22.761 13.9486667,16.30125 C10.5326667,23.976 5.57133333,48.1545 23.363,48.1545 C28.3243333,48.1545 41.2563333,46.1295 35.7866667,20.87775 C38.3893333,23.652 42.761,26.83125 45.9533333,21.40425 C47.6003333,15.9165 37.759,15.65325 34.3226667,13.34475 Z" id="Shape"></path>
+        </g>
+        <g id="eyes" transform="translate(15.342424, 23.384589)" stroke="#545151" stroke-width="0.25" fill="#CCCACA">
+          <path d="M0.639575758,0.712910959 C0.639575758,0.712910959 2.18490909,4.17566096 4.21824242,0.712910959" id="Shape"></path>
+          <path d="M10.8062424,0.712910959 C10.8062424,0.712910959 12.3515758,4.17566096 14.3849091,0.712910959" id="Shape"></path>
+        </g>
+        <g id="nose" transform="translate(21.442424, 38.475000)" fill="#545151">
+          <ellipse id="Oval" cx="1.53424242" cy="1.6605" rx="1.525" ry="1.51875"></ellipse>
+        </g>
+      </g>
+      <g id="legs" transform="translate(6.100000, 56.700000)" fill="#CCCACA">
+        <path d="M22.0006667,14.499 C22.0006667,14.499 26.6366667,6.399 39.1823333,7.857 C39.8736667,7.938 40.5921111,8.05275 41.3376667,8.20125 C41.3376667,8.20125 50.1623333,17.091 27.2466667,19.44 C27.2466667,19.44 22.082,20.10825 22.1633333,15.61275 L22.0006667,14.499 Z" id="Shape"></path>
+        <path d="M18.9506667,14.60025 C18.9506667,14.60025 9.882,17.15175 2.03333333,7.22925 C1.59955556,6.67575 1.17255556,6.0885 0.752333333,5.4675 C0.752333333,5.4675 0.752333333,-7.047 18.7066667,7.39125 C18.7066667,7.39125 22.7733333,10.55025 19.6013333,13.689 L18.9506667,14.60025 Z" id="Shape"></path>
+      </g>
+    </symbol>
+</svg>
+
+<div class="aniPart" id="aniPart-sleep">
+  <div class="row" id="row-sleep">
+    <svg viewBox="0 0 100 100" width="200px" height="500px">
+      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#sleep-sheep"></use>
+    </svg>
+  </div>
 </div>
-<!-- disqus 评论框 end -->
+  </section>
+  <section id="pageFour">
+    <div id="title">
+      <p class="animated fadeInUp delay-1">SLEEPING</p>
+    </div>
+  </section>
 
-<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "{{site.disqus.username}}";
-    var disqus_identifier = "{{site.disqus.username}}/{{page.url}}";
-    var disqus_url = "{{site.url}}{{page.url}}";
+  <!-- <div id="animation"></div> -->
+  <section id="buttons" data-page="0">
+    <div class="container">
+      <a href="#" onclick="nextpage();return false;" class="btn btn-2">NEXT</a>
+    </div>
+    <div class="container">
+      <a href="#" onclick="skippart();return false;" class="btn btn-2">SKIP</a>
+    </div>
+  </section>
+  <audio id='soundtrack' loop autoplay>
+      <source src="sounds/soundtrack.mp3" type="audio/mp3">
+  </audio>
+  <script src="js/lottie.js" type="text/javascript"></script>
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+  <script src="js/action.js"></script>
+  <script src="js/animation.js"></script>
 
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<!-- disqus 公共JS代码 end -->
-{% endif %}
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js'></script>
+</body>
+</html>
